@@ -18,7 +18,9 @@ public class Server {
             // while is open <==> isn't closed
             while (!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
-                System.out.println("New user has connected !");
+
+                ( new ConnectionThread(socket) ).start(); // start a new thread to handle every new connectiong
+
                 // each object of this class will be responsible for communicating with a user
                 // each socket created means that a new user has connected
             }
@@ -39,6 +41,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(65500);
         Server server = new Server(serverSocket);
+        System.out.print("\n-> Starting server on port : 65500 ");
         server.startServer();
     }
 }
