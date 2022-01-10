@@ -23,26 +23,21 @@ public class Server {
 
                 // each object of this class will be responsible for communicating with a user
                 // each socket created means that a new user has connected
-
             }
-
         }catch (IOException e){
             closeServer();
         }
     }
-
     public void closeServer(){
         try {
             // server still running
             if(serverSocket != null)
                 serverSocket.close();
 
-        } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
     }
-
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(65500);
         Server server = new Server(serverSocket);
