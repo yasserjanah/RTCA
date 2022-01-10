@@ -1,8 +1,7 @@
 - Each added feature, bug fix or code change should be represented as a pull request.
 - That should happen through branching as there is **no push to the main branch**.
-- Stop git client from accedently pushing to master branch, just execute the below code
 
-- Following a naming convention when create a branch name. example patch-12
+- Following a naming convention when create a branch name. example create-full-project-branch
 ```bash
 $ git clone https://github.com/yasserjanah/RTCA.git
 $ git checkout -b create-full-project-branch
