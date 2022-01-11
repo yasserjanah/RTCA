@@ -1,8 +1,13 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
+    // list of connected users
+    private static List<ConnectionThread> connectionThreadList=new ArrayList<>();
+
     // incoming connections
     ServerSocket serverSocket;
     // create socket client to communicate
@@ -19,7 +24,9 @@ public class Server {
             while (!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
 
-                ( new ConnectionThread(socket) ).start(); // start a new thread to handle every new connectiong
+                ConnectionThread connectionThread=new ConnectionThread(socket);
+                connectionThreadList.add(connectionThread); // new thread for every connection, added to arrayList
+                connectionThread.start();
 
                 // each object of this class will be responsible for communicating with a user
                 // each socket created means that a new user has connected
@@ -28,6 +35,19 @@ public class Server {
             closeServer();
         }
     }
+
+    //remove connectionThread
+    public static void romoveConnectionThread(ConnectionThread connectionThread){
+        connectionThreadList.remove(connectionThread);
+
+        System.out.print("\n ................................ \n connected users :\n");
+        for (ConnectionThread c:connectionThreadList) {
+            System.out.println("\t - "+c.getNameUser() + " ==> IP : "+c.getIpUser());
+        }
+        System.out.println(" ................................ ");
+    }
+
+
     public void closeServer(){
         try {
             // server still running
