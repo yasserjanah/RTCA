@@ -58,6 +58,16 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    public static List<ConnectionThread> getConnectionThreadList() {
+        return connectionThreadList;
+    }
+
+    public static void sendOneToOneMsg( String srcName, String srcIp, String Message, int targetIndex){
+        connectionThreadList.get(targetIndex).receiveMsg( srcName, srcIp, Message);
+    }
+
+
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(65500);
         Server server = new Server(serverSocket);
