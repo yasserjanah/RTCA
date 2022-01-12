@@ -1,12 +1,12 @@
 package tests;
 
-import Database.MongoDBFunctions;
+import Database.MongoDBController;
 
-public class MongoDBFunctionsTest {
+public class MongoDBControllerTest {
 
     public static void main(String[] args) {
 
-        MongoDBFunctions registerLoginFunctions=new MongoDBFunctions();
+        MongoDBController registerLoginFunctions=new MongoDBController();
         // insertion
         registerLoginFunctions.insertionOfUser("sinje","123");
         registerLoginFunctions.insertionOfUser("pppedp ","hassan");
