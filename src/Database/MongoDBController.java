@@ -9,7 +9,7 @@ import org.bson.Document;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 
-public class MongoDBFunctions {
+public class MongoDBController {
     private MongoClient mongoClient;
     private MongoDatabase mongoDatabase;
     private MongoCollection<Document> mongoCollection;
