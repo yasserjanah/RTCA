@@ -48,7 +48,8 @@ public class ConnectionThread extends Thread {
                 pw.println("write|#n#\t\t " + i + " -> " + th.getNameUser() + "  (@)  " + th.getIpUser());
             }
             pw.flush();
-            pw.println("writeRead|#n# [Server]> You may need to press enter each time to show received messages, To send a message type=> IndexOfUser:YourMessageHere #n# [Server] your input > ");
+            pw.println("writeRead|#n# [Server]> You may need to press enter each time to show received messages, To send a message type=> IndexOfUser:YourMessageHere #n#" +
+                    "To send a broadcast type=> *:YourMessageHere #n# [Server] your input > ");
 
 
             try {
@@ -70,10 +71,15 @@ public class ConnectionThread extends Thread {
                     explode[0] ="";
                     message = String.join( "", explode);
                     try {
-                        int_targetUser = Integer.parseInt( str_targetUser );
-                        if( int_targetUser<1 || int_targetUser>Server.getConnectionThreadList().size() )
-                            throw new NumberFormatException();
-                        Server.sendOneToOneMsg( this.nameUser, this.ipUser.split(":")[0], message, int_targetUser-1);
+                        if(str_targetUser.equals("*")){
+                            Server.sendBroadcastMsg( this.nameUser, this.ipUser.split(":")[0], message,this);
+                        }else{
+                            int_targetUser = Integer.parseInt( str_targetUser );
+                            if( int_targetUser<1 || int_targetUser>Server.getConnectionThreadList().size() )
+                                throw new NumberFormatException();
+                            Server.sendOneToOneMsg( this.nameUser, this.ipUser.split(":")[0], message, int_targetUser-1);
+                        }
+
                     }catch( NumberFormatException nfexc2){
                         pw.println("write|#n#[Server]> Invalid input, try again. ");
                     }
@@ -85,7 +91,7 @@ public class ConnectionThread extends Thread {
     }
 
     public void receiveMsg(String srcName, String srcIp, String Message){
-
+        pw.flush();
         pw.println("write|#n#*** #n#*****[Server: New message] from("+srcName+"@"+srcIp+")> "+Message+"#n#***");
     }
 
