@@ -67,6 +67,14 @@ public class Server {
         connectionThreadList.get(targetIndex).receiveMsg( srcName, srcIp, Message);
     }
 
+    public static void sendBroadcastMsg( String srcName, String srcIp, String Message, ConnectionThread th){
+        for (ConnectionThread c : connectionThreadList){
+            if (c.equals(th)) continue;
+            c.receiveMsg( srcName, srcIp, Message);
+        }
+
+    }
+
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(65500);
