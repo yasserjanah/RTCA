@@ -14,7 +14,7 @@ public class MongoDBController {
     private MongoDatabase mongoDatabase;
     private MongoCollection<Document> mongoCollection;
 
-    public MongoDBFunctions() {
+    public MongoDBController() {
         mongoClient=MongoConnection.getMongoClient();
 
         // Accessing the database
