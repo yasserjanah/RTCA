@@ -1,3 +1,5 @@
+import Database.MongoDBController;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +10,8 @@ public class Server {
     // list of connected users
     private static List<ConnectionThread> connectionThreadList=new ArrayList<>();
 
+    public MongoDBController mongoDBController;
+
     // incoming connections
     ServerSocket serverSocket;
     // create socket client to communicate
@@ -15,6 +19,7 @@ public class Server {
     // Setup
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        this.mongoDBController = new MongoDBController();
     }
 
     public void startServer(){
@@ -24,7 +29,7 @@ public class Server {
             while (!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
 
-                ConnectionThread connectionThread=new ConnectionThread(socket);
+                ConnectionThread connectionThread=new ConnectionThread( socket, this.mongoDBController);
                 connectionThreadList.add(connectionThread); // new thread for every connection, added to arrayList
                 connectionThread.start();
 
@@ -42,7 +47,7 @@ public class Server {
 
         System.out.print("\n ................................ \n connected users :\n");
         for (ConnectionThread c:connectionThreadList) {
-            System.out.println("\t - "+c.getNameUser() + " ==> IP : "+c.getIpUser());
+            System.out.println("\t - "+c.getUsername() + " ==> IP : "+c.getIpUser());
         }
         System.out.println(" ................................ ");
     }
@@ -79,7 +84,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(65500);
         Server server = new Server(serverSocket);
-        System.out.print("\n-> Starting server on port : 65500 ");
+        System.out.println("\n-> Starting server on port : 65500 ");
         server.startServer();
     }
 }
