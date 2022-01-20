@@ -1,3 +1,7 @@
+import Authentication.RegistrationRequest;
+import Database.MongoDBController;
+import Exceptions.UserExistsException;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Objects;
@@ -5,19 +9,25 @@ import java.util.Objects;
 public class ConnectionThread extends Thread {
 
     private Socket socket;
+    private MongoDBController mongoDBController;
     private PrintWriter pw;
     private BufferedReader br;
-    private String nameUser;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    private String username;
     private String ipUser;
 
-    ConnectionThread(Socket socket) throws IOException {
+    ConnectionThread( Socket socket, MongoDBController mongoDBController) throws IOException {
         this.socket = socket;
+        this.mongoDBController = mongoDBController;
         InputStream is = socket.getInputStream();
         OutputStream os = socket.getOutputStream();
+        oos = new ObjectOutputStream(os);
+        ois = new ObjectInputStream(is);
         InputStreamReader isr = new InputStreamReader(is);
         br = new BufferedReader(isr);
         pw = new PrintWriter( os, true);
-        nameUser = "{UNSET}";
+        username = "{UNSET}";
     }
 
     @Override
@@ -25,15 +35,39 @@ public class ConnectionThread extends Thread {
         int i;
         ipUser=socket.getRemoteSocketAddress().toString();
 
-        pw.println("writeRead|#n# [Server]> Enter Your Name to start : ");
+        pw.println("auth|#n# [Server]> authentication ");
         pw.flush();
         try {
-            nameUser=br.readLine();
-        } catch (IOException e) {
-            System.err.print("#n#[IOException2]> Cannot readLine()");
+            Object responseObject = ois.readObject();
+            if( responseObject instanceof RegistrationRequest ){
+
+                RegistrationRequest rr = (RegistrationRequest) responseObject;
+                try{
+                    synchronized (this.mongoDBController){
+                        this.mongoDBController.insertionOfUser( rr.getUsername(), rr.getPassword() );
+                    }
+                }catch(UserExistsException uexc){
+                    pw.println("write|#n##n# [Server]> username already taken, choose another one ! ");
+                    pw.println("auth|#n# [Server]> authentication ");
+                    pw.flush();
+                }
+                pw.println("write|#n##n# [Server]> user ("+rr.getUsername()+") is successfully registred, please sign-in ! #n#");
+                pw.flush();
+                pw.println("auth|#n# [Server]> authentication ");
+                pw.flush();
+            }else{
+                pw.println("auth|#n# [Server]> authentication ");
+                pw.flush();
+                // Login request handling
+                // dont forget to set username
+            }
+            username =br.readLine();
+        } catch (Exception e) {
+            System.err.print("\n[Exception]> exception reading Object : "+e.getMessage());
+            // check if connection was closed here :
         }
 
-        System.out.print("#n#-> New user has connected : "+nameUser + "  ==> IP : "+ipUser);
+        System.out.print("\n-> New user has connected : "+ username + "  ==> IP : "+ipUser);
         String userStrInput="", str_targetUser="", message="";;
         String [] explode;
         int userIntInput=1, int_targetUser=0 ;
@@ -45,7 +79,7 @@ public class ConnectionThread extends Thread {
             pw.flush();
             for( ConnectionThread th: Server.getConnectionThreadList() ) {
                 i++;
-                pw.println("write|#n#\t\t " + i + " -> " + th.getNameUser() + "  (@)  " + th.getIpUser());
+                pw.println("write|#n#\t\t " + i + " -> " + th.getUsername() + "  (@)  " + th.getIpUser());
             }
             pw.flush();
             pw.println("writeRead|#n# [Server]> You may need to press enter each time to show received messages, To send a message type=> IndexOfUser:YourMessageHere #n#" +
@@ -57,12 +91,12 @@ public class ConnectionThread extends Thread {
                    userStrInput = br.readLine();
                     if( userStrInput!=null ) userStrInput = userStrInput.trim();
                 }catch( IOException ioexc){
-                    System.err.print("#n#[IOException3]> Cannot readLine()");
+                    System.err.print("\n[IOException3]> Cannot readLine()");
                 }
                 userIntInput = Integer.parseInt( userStrInput );
                 if( userIntInput==0 ) break;
             }catch( NumberFormatException nfexc){
-                System.err.print("#n#[NumberFormatException]> bad number input");
+                System.err.print("\n[NumberFormatException]> bad number input");
                 explode = userStrInput.split(":");
                 if( explode.length<2 || explode[1].trim().length()==0 ){
                     pw.println("write|#n# [Server]> Invalid input, try again. ");
@@ -72,12 +106,12 @@ public class ConnectionThread extends Thread {
                     message = String.join( "", explode);
                     try {
                         if(str_targetUser.equals("*")){
-                            Server.sendBroadcastMsg( this.nameUser, this.ipUser.split(":")[0], message,this);
+                            Server.sendBroadcastMsg( this.username, this.ipUser.split(":")[0], message,this);
                         }else{
                             int_targetUser = Integer.parseInt( str_targetUser );
                             if( int_targetUser<1 || int_targetUser>Server.getConnectionThreadList().size() )
                                 throw new NumberFormatException();
-                            Server.sendOneToOneMsg( this.nameUser, this.ipUser.split(":")[0], message, int_targetUser-1);
+                            Server.sendOneToOneMsg( this.username, this.ipUser.split(":")[0], message, int_targetUser-1);
                         }
 
                     }catch( NumberFormatException nfexc2){
@@ -99,9 +133,9 @@ public class ConnectionThread extends Thread {
         try {
             pw.println("write|#n# [Server]> Closing connection ... ");
             socket.close();
-            System.out.print("#n#-> Connection closed : "+nameUser+" ==> IP : "+ipUser);
+            System.out.print("\n-> Connection closed : "+ username +" ==> IP : "+ipUser);
         }catch (IOException ioexc){
-            System.err.print("#n#[IOException4]> Cannot close connection!");
+            System.err.print("\n[IOException4]> Cannot close connection!");
         }
         Server.romoveConnectionThread(this); // to remove ConnectionThread from the list
     }
@@ -111,17 +145,17 @@ public class ConnectionThread extends Thread {
         if (this == o) return true;
         if (!(o instanceof ConnectionThread)) return false;
         ConnectionThread that = (ConnectionThread) o;
-        return Objects.equals(nameUser, that.nameUser) && Objects.equals(ipUser, that.ipUser);
+        return Objects.equals(username, that.username) && Objects.equals(ipUser, that.ipUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameUser, ipUser);
+        return Objects.hash(username, ipUser);
     }
 
 
-    public String getNameUser() {
-        return nameUser;
+    public String getUsername() {
+        return username;
     }
 
     public String getIpUser() {

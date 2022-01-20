@@ -1,3 +1,5 @@
+import Authentication.RegistrationRequest;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class Client {
 
                 InputStream is=s.getInputStream();
                 OutputStream os=s.getOutputStream();
+                ObjectInputStream ois = new ObjectInputStream(is);
+                ObjectOutputStream oos = new ObjectOutputStream(os);
                 InputStreamReader isr=new InputStreamReader(is);
                 BufferedReader br=new BufferedReader(isr);
                 PrintWriter pr=new PrintWriter(os,true);
@@ -35,6 +39,8 @@ public class Client {
                 String serverInput;
                 int userIntInput=1 ;
                 String userInput="1";
+                String username;
+                RegistrationRequest rr;
 
                 while (true){
                     serverInput = br.readLine();
@@ -42,6 +48,37 @@ public class Client {
                         break;
                     serverCmds = explodeServerResponse( serverInput );
                     switch( serverCmds[0] ){
+                        case "auth":
+                            do{
+                                System.out.print("\n\t ###  Authentication  ###  ");
+                                System.out.print("\n [0]> Exit  ");
+                                System.out.print("\n [1]> login  ");
+                                System.out.print("\n [2]> register  \n\t > ");
+                                try {
+                                    userIntInput = scanner.nextInt();
+                                    scanner.nextLine(); // nextInt() buffer issue
+                                }catch(Exception exc){}
+                            }while( userIntInput<0 || userIntInput>2 );
+                            switch ( userIntInput ){
+                                case 1:
+                                    // Login Request Code
+                                    continue;
+
+                                case 2:
+                                    System.out.print("\n [Server]> Enter the username : ");
+                                    userInput = scanner.nextLine();
+                                    username = userInput.trim();
+                                    System.out.print("\n [Server]> Enter the password : ");
+                                    userInput = scanner.nextLine();
+                                    rr = new RegistrationRequest( username, userInput);
+                                    oos.writeObject( rr );
+                                    break;
+                                case 0:
+                                    System.out.print("\n [Server]> Quiting ....");
+                                    s.close();
+                                    return;
+                            }
+                            break;
                         case "writeRead":
                             outputMsg = serverCmds[1];
                             System.out.print(outputMsg);

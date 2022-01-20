@@ -1,6 +1,7 @@
 package Database;
 
 
+import Exceptions.UserExistsException;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -22,17 +23,17 @@ public class MongoDBController {
 
         // Retrieving a collection
         mongoCollection=mongoDatabase.getCollection("user");
-        System.out.println("Collection selected successfully");
+        System.out.println("[DbController]> Collection retrieved successfully");
     }
 
-    public void insertionOfUser(String username , String password){
+    public void insertionOfUser(String username , String password) throws UserExistsException {
         Document document=mongoCollection.find(Filters.eq("username", username)).first();
-        if(document!=null){
-            System.out.println("[Erro]:username " +username+" exists ");
+        if( document!=null ){
+            throw new UserExistsException();
         }
         else {
-            mongoCollection.insertOne(transformToDocument(username,password));
-            System.out.println("user inserted successfully ");
+            mongoCollection.insertOne(transformToDocument(username, password ));
+            System.out.println("[DbController]> user ("+username+") inserted successfully ");
         }
     }
 
@@ -45,7 +46,8 @@ public class MongoDBController {
     public boolean passwordIsValid(String username, String password){
         Document document=mongoCollection.find(Filters.eq("username", username)).first();
         if( document==null){
-            System.out.println("[Erro]:username "+ username +" not exists ");
+            System.out.println("[DbController]> user "+ username +" does not exists ");
+            System.out.println("password invalid ");
             return false;
         }
         String pw_hash =document.getString("password");
@@ -57,4 +59,5 @@ public class MongoDBController {
             return false;
         }
     }
+
 }
