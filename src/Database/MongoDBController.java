@@ -1,6 +1,7 @@
 package Database;
 
 
+import Exceptions.LoginErrorException;
 import Exceptions.UserExistsException;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -43,21 +44,21 @@ public class MongoDBController {
         return document;
     }
 
-    public boolean passwordIsValid(String username, String password){
+    public boolean passwordIsValid(String username, String password) throws LoginErrorException {
         Document document=mongoCollection.find(Filters.eq("username", username)).first();
-        if( document==null){
-            System.out.println("[DbController]> user "+ username +" does not exists ");
-            System.out.println("password invalid ");
-            return false;
-        }
-        String pw_hash =document.getString("password");
-        if( BCrypt.checkpw(password, pw_hash) ) {
-            System.out.println("password valid ");
-            return true;
-        }else {
-            System.out.println("[Erro]:password not valid");
-            return false;
-        }
-    }
+        if( document != null ) {
 
+            String pw_hash = document.getString("password");
+
+            if (BCrypt.checkpw(password, pw_hash)) {
+                System.out.println("password valid ");
+                return true;
+            }
+
+            System.out.println("[Erro]:password not valid");
+            throw new LoginErrorException();
+        }
+
+        return false;
+    }
 }

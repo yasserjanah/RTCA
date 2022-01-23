@@ -1,3 +1,4 @@
+import Authentication.LoginRequest;
 import Authentication.RegistrationRequest;
 
 import java.io.*;
@@ -41,15 +42,16 @@ public class Client {
                 String userInput="1";
                 String username;
                 RegistrationRequest rr;
+                LoginRequest lr;
 
                 while (true){
                     serverInput = br.readLine();
-                    if( s.isClosed() )
+                    if( s.isClosed() || serverInput==null ) // throws an exception
                         break;
                     serverCmds = explodeServerResponse( serverInput );
-                    switch( serverCmds[0] ){
-                        case "auth":
-                            do{
+                    switch (serverCmds[0]) {
+                        case "auth" -> {
+                            do {
                                 System.out.print("\n\t ###  Authentication  ###  ");
                                 System.out.print("\n [0]> Exit  ");
                                 System.out.print("\n [1]> login  ");
@@ -57,46 +59,54 @@ public class Client {
                                 try {
                                     userIntInput = scanner.nextInt();
                                     scanner.nextLine(); // nextInt() buffer issue
-                                }catch(Exception exc){}
-                            }while( userIntInput<0 || userIntInput>2 );
-                            switch ( userIntInput ){
-                                case 1:
+                                } catch (Exception ignored) {
+                                }
+                            } while (userIntInput < 0 || userIntInput > 2);
+                            switch (userIntInput) {
+                                case 1 -> {
                                     // Login Request Code
-                                    continue;
-
-                                case 2:
                                     System.out.print("\n [Server]> Enter the username : ");
                                     userInput = scanner.nextLine();
                                     username = userInput.trim();
                                     System.out.print("\n [Server]> Enter the password : ");
                                     userInput = scanner.nextLine();
-                                    rr = new RegistrationRequest( username, userInput);
-                                    oos.writeObject( rr );
-                                    break;
-                                case 0:
+                                    lr = new LoginRequest(username, userInput);
+                                    oos.writeObject(lr);
+                                }
+                                case 2 -> {
+                                    System.out.print("\n [Server]> Enter the username : ");
+                                    userInput = scanner.nextLine();
+                                    username = userInput.trim();
+                                    System.out.print("\n [Server]> Enter the password : ");
+                                    userInput = scanner.nextLine();
+                                    rr = new RegistrationRequest(username, userInput);
+                                    oos.writeObject(rr);
+                                }
+                                case 0 -> {
                                     System.out.print("\n [Server]> Quiting ....");
                                     s.close();
                                     return;
+                                }
                             }
-                            break;
-                        case "writeRead":
+                        }
+                        case "writeRead" -> {
                             outputMsg = serverCmds[1];
                             System.out.print(outputMsg);
                             userInput = scanner.nextLine();
                             pr.println(userInput);
-                            break;
-                        case "write":
+                        }
+                        case "write" -> {
                             outputMsg = serverCmds[1];
                             System.out.print(outputMsg);
-                            break;
-                        case "read":
+                        }
+                        case "read" -> {
                             userInput = scanner.nextLine();
                             pr.println(userInput);
-                            break;
+                        }
                     }
                     try {
                         userIntInput = Integer.parseInt( userStrInput );
-                    }catch( NumberFormatException nfexc){
+                    }catch( NumberFormatException ignored){
                     }
                     if( userIntInput==0 ) break;
                 }

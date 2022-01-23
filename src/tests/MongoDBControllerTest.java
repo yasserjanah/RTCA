@@ -26,9 +26,9 @@ public class MongoDBControllerTest {
         }
 
         //validation of password
-        System.out.println("\n Password validation=> trying (hassan) as password for 'ayoub' => "+registerLoginFunctions.passwordIsValid("ayoub","hassan") );
-        System.out.println("\n Password validation=> trying (123) as password for 'amine' => "+registerLoginFunctions.passwordIsValid("amine","123") );
-        System.out.println("\n Password validation=> trying (123) as password for 'hassan' => "+registerLoginFunctions.passwordIsValid("hassan","123") );
+        //System.out.println("\n Password validation=> trying (hassan) as password for 'ayoub' => "+registerLoginFunctions.passwordIsValid("ayoub","hassan") );
+        //System.out.println("\n Password validation=> trying (123) as password for 'amine' => "+registerLoginFunctions.passwordIsValid("amine","123") );
+        //System.out.println("\n Password validation=> trying (123) as password for 'hassan' => "+registerLoginFunctions.passwordIsValid("hassan","123") );
 
 
     }
