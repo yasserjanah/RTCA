@@ -52,11 +52,11 @@ public class ConnectionThread extends Thread {
                             this.mongoDBController.insertionOfUser(rr.getUsername(), rr.getPassword());
                         }
                     } catch (UserExistsException uexc) {
-                        pw.println("write|#n##n# [Console.Server]> username already taken, choose another one ! ");
+                        pw.println("write|#n##n#"+Colors.WHITE_BOLD+" ["+Colors.YELLOW_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Register"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"> "+Colors.GREEN_BOLD+rr.getUsername()+Colors.YELLOW_BOLD+" already taken, choose another one "+Colors.RED+"! \n\n"+Colors.RESET);
                         pw.println("auth|#n# [Console.Server]> authentication ");
                         pw.flush();
                     }
-                    pw.println("write|#n##n# [Console.Server]> user (" + rr.getUsername() + ") is successfully registred, please sign-in ! #n#");
+                    pw.println("write|#n##n#"+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Register"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"> user "+ Colors.GREEN_BOLD + rr.getUsername() + Colors.RESET + " is " + Colors.GREEN_UNDERLINED + "successfully"+Colors.RESET+" registred, " + Colors.WHITE_BOLD + " please sign-in " + Colors.YELLOW_BOLD+ "! #n#");
                     pw.flush();
                     pw.println("auth|#n# [Console.Server]> authentication ");
                     pw.flush();
@@ -69,21 +69,19 @@ public class ConnectionThread extends Thread {
                     try {
                         boolean check = this.mongoDBController.passwordIsValid(loginRequestr.getUsername(), loginRequestr.getPassword());
                         if (check) {
-                            System.out.println("VALID");
                             username = loginRequestr.getUsername();
-                            pw.println("write|#n##n# [Console.Server]> user (" + username + ") is successfully logged In ! #n#"); // writeRead = write+read , so client will send smthing not expected by server
+                            pw.println("write|#n##n#"+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Login"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"> user "+ Colors.GREEN_BOLD + loginRequestr.getUsername() + Colors.RESET + " is " + Colors.GREEN_UNDERLINED + "successfully"+Colors.RESET+" logged in. #n#"); // writeRead = write+read , so client will send smthing not expected by server
                             pw.flush();
                             break; // if loged break
                         } else {
-                            System.out.println("NOT VALID");
-                            pw.println("write|#n##n# [Console.Server]> username OR password Incorrect ! ");
+                            pw.println("write|#n##n#"+Colors.WHITE_BOLD+" ["+Colors.RED_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Login"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.YELLOW_BOLD+"> username OR password is Incorrect! #n#");
                             pw.flush();
                             pw.println("auth|#n# [Console.Server]> authentication ");
                             pw.flush();
                         }
 
                     } catch (LoginErrorException uexc) {
-                        pw.println("write|#n##n# [Console.Server]> username OR password Incorrect ! ");
+                        pw.println("write|#n##n#"+Colors.WHITE_BOLD+" ["+Colors.RED_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Login"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.YELLOW_BOLD+"> username OR password is Incorrect! #n#");
                         pw.flush();
                         pw.println("auth|#n# [Console.Server]> authentication ");
                         pw.flush();
@@ -93,27 +91,31 @@ public class ConnectionThread extends Thread {
             } catch (Exception e) {
                 System.err.print("\n[Exception]> exception reading Object : " + e.getMessage());
                 // check if connection was closed here :
+                // I've closed the connection because when the client doesn't send any object
+                // the server enter an inifite loop
+                closeConnection();
+                break;
             }
         }
 
-        System.out.print("\n-> New user has connected : "+ username + "  ==> IP : "+ipUser);
+        System.out.print("\n"+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::NewUserConnected"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> New user has connected : "+ Colors.GREEN_BOLD + username + Colors.CYAN_BOLD + "  ==>"+Colors.WHITE_BOLD+" IP : "+Colors.GREEN_BOLD+ipUser+Colors.RESET);
         String userStrInput="", str_targetUser="", message="";;
         String [] explode;
         int userIntInput=1, int_targetUser=0 ;
-        pw.println("write|#n# [Console.Server]> You are connected now, to close this connection enter 0#n##n#");
+        pw.println("write|#n# "+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::CONNECTED"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> You are "+Colors.GREEN_BOLD+"connected"+Colors.RESET+" now, to close this connection enter "+Colors.YELLOW_BOLD+"0"+Colors.RESET+"#n##n#");
 
         while( true ){
-            pw.println("write|#n##n# [Console.Server]> Currently connected users : ");
+            pw.println("write|#n##n# "+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::CONNECTED"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+" Currently connected users : ");
             i=0;
             pw.flush();
             for( ConnectionThread th: Server.getConnectionThreadList() ) {
                 i++;
-                pw.println("write|#n#\t\t " + i + " -> " + th.getUsername() + "  (@)  " + th.getIpUser());
+                pw.println("write|#n#\t\t " + Colors.GREEN_BOLD + i + Colors.YELLOW_BOLD + " -> " + Colors.GREEN_BOLD + th.getUsername() + Colors.RESET + "  (@)  " + Colors.GREEN_BOLD + th.getIpUser() + Colors.RESET );
             }
             pw.flush();
-            pw.println("writeRead|#n# [Console.Server]> You may need to press enter each time to show received messages, To send a message type=> IndexOfUser:YourMessageHere #n#" +
-                    "To send a broadcast type=> *:YourMessageHere #n# [Console.Server] your input > ");
-
+            pw.println("writeRead|#n# "+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::CONNECTED"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> You may need to press enter each time to show received messages, #n#" +
+                    Colors.WHITE_BOLD+"  ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::CONNECTED"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> To send a message "+Colors.YELLOW_BOLD+"type=> "+Colors.GREEN_BOLD+"IndexOfUser"+Colors.YELLOW_BOLD+":"+Colors.CYAN_BOLD+"YourMessageHere #n#" +
+                    Colors.WHITE_BOLD+"  ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::CONNECTED"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> To send a broadcast "+Colors.YELLOW_BOLD+"type=> "+Colors.GREEN_BOLD+"*"+Colors.YELLOW_BOLD+":"+Colors.CYAN_BOLD+"YourMessageHere #n# " + Colors.RESET + Colors.CYAN_BACKGROUND+"#"+Colors.RESET+Colors.GREEN_BOLD+"> "+Colors.WHITE_BOLD);
 
             try {
                 try {
@@ -121,14 +123,21 @@ public class ConnectionThread extends Thread {
                     if( userStrInput!=null ) userStrInput = userStrInput.trim();
                 }catch( IOException ioexc){
                     System.err.print("\n[IOException3]> Cannot readLine()");
+                    closeConnection();
+                    break;
                 }
+                assert userStrInput != null;
                 userIntInput = Integer.parseInt( userStrInput );
                 if( userIntInput==0 ) break;
             }catch( NumberFormatException nfexc){
                 System.err.print("\n[NumberFormatException]> bad number input");
+                if (userStrInput == null ) {
+                    closeConnection();
+                    break;
+                }
                 explode = userStrInput.split(":");
                 if( explode.length<2 || explode[1].trim().length()==0 ){
-                    pw.println("write|#n# [Console.Server]> Invalid input, try again. ");
+                    pw.println("write|#n# "+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::CONNECTED"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> Invalid Input, try again.");
                 }else{
                     str_targetUser = explode[0];
                     explode[0] ="";
@@ -144,7 +153,7 @@ public class ConnectionThread extends Thread {
                         }
 
                     }catch( NumberFormatException nfexc2){
-                        pw.println("write|#n#[Console.Server]> Invalid input, try again. ");
+                        pw.println("write|#n# "+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::CONNECTED"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> Invalid Input, try again.");
                     }
                 }
             }
@@ -155,7 +164,7 @@ public class ConnectionThread extends Thread {
 
     public void receiveMsg(String srcName, String srcIp, String Message){
         pw.flush();
-        pw.println("write|#n#*** #n#*****[Console.Server: New message] from("+srcName+"@"+srcIp+")> "+Message+"#n#***");
+        pw.println("write|#n# "+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::MESSAGE"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"-> New message from "+Colors.YELLOW_BOLD+"("+Colors.GREEN_BOLD+srcName+Colors.WHITE_BOLD+"@"+Colors.GREEN_BOLD+srcIp+Colors.YELLOW_BOLD+")> "+Colors.WHITE_BOLD+Message+"#n#");
     }
 
     public void closeConnection(){
