@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@rtca.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="721.0" stroke="BLACK" strokeType="INSIDE" width="1081.0">
+         <fill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.5647059082984924" green="0.615686297416687" blue="0.9529411792755127" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.2557570012244735">
+                     <color>
+                        <Color red="0.8117647171020508" green="0.5176470875740051" blue="0.5176470875740051" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.49322589564324343">
+                     <color>
+                        <Color red="0.7098039388656616" green="0.4901960790157318" blue="0.47843137383461" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.7341707153296201">
+                     <color>
+                        <Color red="0.019607843831181526" green="0.43529412150382996" blue="0.46666666865348816" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.19607843458652496" green="0.3607843220233917" blue="0.30588236451148987" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle fill="WHITE" height="7.0" layoutX="391.0" layoutY="323.0" opacity="0.37" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" AnchorPane.topAnchor="323.0" />
+      <Circle fill="WHITE" layoutX="547.0" layoutY="187.0" radius="53.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.topAnchor="134.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="70.0" layoutX="1.0" opacity="0.34" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1080.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="loginButton" alignment="CENTER" layoutX="453.0" layoutY="573.0" mnemonicParsing="false" opacity="0.81" prefHeight="48.0" prefWidth="177.0" text="LOGIN" textAlignment="CENTER">
+         <font>
+            <Font name="Montserrat Black" size="22.0" />
+         </font></Button>
+      <Text fill="WHITE" layoutX="505.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN">
+         <font>
+            <Font name="Montserrat ExtraBold" size="21.0" />
+         </font>
+      </Text>
+      <TextField id="usernameId" fx:id="usernameId" alignment="CENTER" layoutX="439.0" layoutY="373.0" prefHeight="39.0" prefWidth="205.0" promptText="username" style="-fx-background-color: rgba(255,255,255,0.3);" stylesheets="@rtca.css" />
+      <PasswordField fx:id="passwordId" alignment="CENTER" layoutX="439.0" layoutY="447.0" prefHeight="39.0" prefWidth="205.0" promptText="password" />
+      <Text fill="WHITE" layoutX="497.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RTCA">
+         <font>
+            <Font name="Montserrat Black" size="29.0" />
+         </font>
+      </Text>
+      <Hyperlink layoutX="516.0" layoutY="636.0" text="register" textFill="WHITE" />
+   </children>
+</AnchorPane>
