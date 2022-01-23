@@ -1,5 +1,6 @@
-package Console;
+package GUI;
 
+import Communication.Message;
 import Database.MongoDBController;
 
 import java.io.IOException;
@@ -70,23 +71,21 @@ public class Server {
         return connectionThreadList;
     }
 
-    public static void sendOneToOneMsg( String srcName, String srcIp, String Message, int targetIndex){
-        connectionThreadList.get(targetIndex).receiveMsg( srcName, srcIp, Message);
+    public static void sendOneToOneMsg( Message message, int targetIndex){
+        connectionThreadList.get(targetIndex).receiveMsg( message );
     }
 
-    public static void sendBroadcastMsg( String srcName, String srcIp, String Message, ConnectionThread th){
+    public static void sendBroadcastMsg( Message message){
         for (ConnectionThread c : connectionThreadList){
-            if (c.equals(th)) continue;
-            c.receiveMsg( srcName, srcIp, Message);
+            c.receiveMsg( message );
         }
-
     }
 
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(65500);
         Server server = new Server(serverSocket);
-        System.out.print("\n"+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"> Starting server on port : "+Colors.GREEN_BOLD+"localhost"+Colors.YELLOW_BOLD+":"+Colors.GREEN_BOLD+"65500 "+Colors.WHITE_BOLD+"...\n");
+        System.out.println("\n-> Starting server on port : 65500 ");
         server.startServer();
     }
 }

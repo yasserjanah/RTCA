@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@rtca.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@rtca.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RegisterController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="721.0" stroke="BLACK" strokeType="INSIDE" width="1081.0">
          <fill>
@@ -51,7 +51,7 @@
       <Rectangle fill="WHITE" height="7.0" layoutX="397.0" layoutY="324.0" opacity="0.37" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" AnchorPane.topAnchor="324.0" />
       <Circle fill="WHITE" layoutX="547.0" layoutY="187.0" radius="53.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.topAnchor="134.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="70.0" layoutX="1.0" opacity="0.34" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1080.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Button fx:id="loginButton" alignment="CENTER" layoutX="459.0" layoutY="527.0" mnemonicParsing="false" opacity="0.81" prefHeight="48.0" prefWidth="177.0" text="REGISTER" textAlignment="CENTER">
+      <Button fx:id="registerButton" onAction="#register" alignment="CENTER" layoutX="459.0" layoutY="527.0" mnemonicParsing="false" opacity="0.81" prefHeight="48.0" prefWidth="177.0" text="REGISTER" textAlignment="CENTER">
          <font>
             <Font name="Montserrat Black" size="22.0" />
          </font></Button>
@@ -67,6 +67,6 @@
             <Font name="Montserrat Black" size="29.0" />
          </font>
       </Text>
-      <Hyperlink layoutX="529.0" layoutY="605.0" text="login" textFill="WHITE" />
+      <Hyperlink layoutX="529.0" layoutY="605.0" text="login" onAction="#openLogin" textFill="WHITE" />
    </children>
 </AnchorPane>
