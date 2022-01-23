@@ -46,18 +46,24 @@ public class Client {
                 RegistrationRequest rr;
                 LoginRequest lr;
 
+                // Header
+                System.out.println("\n\t\t"+Colors.RED_BACKGROUND+"                                    "+Colors.RESET);
+                System.out.println("\t\t"+Colors.RED_BACKGROUND+Colors.WHITE_BOLD+"          RTCA Client App           "+Colors.RESET);
+                System.out.println("\t\t"+Colors.RED_BACKGROUND+"                                    "+Colors.RESET);
+
                 while (true){
                     serverInput = br.readLine();
                     if( s.isClosed() || serverInput==null ) // throws an exception
                         break;
-                    serverCmds = explodeServerResponse( serverInput );
+                    serverCmds = explodeServerResponse(serverInput);
                     switch (serverCmds[0]) {
                         case "auth" -> {
                             do {
-                                System.out.print("\n\t ###  Authentication  ###  ");
-                                System.out.print("\n [0]> Exit  ");
-                                System.out.print("\n [1]> login  ");
-                                System.out.print("\n [2]> register  \n\t > ");
+                                System.out.print("\n\n\n\t"+Colors.RED+" #"+Colors.CYAN+"------------"+Colors.RED+"[ "+Colors.YELLOW_UNDERLINED+"Authentication"+Colors.RED+" ]"+Colors.CYAN+"------------"+Colors.RED+"#  \n");
+                                System.out.print("\n\t"+Colors.GREEN_BOLD+"0"+Colors.CYAN+") "+Colors.WHITE_BOLD+"Exit.");
+                                System.out.print("\n\t"+Colors.GREEN_BOLD+"1"+Colors.CYAN+") "+Colors.WHITE_BOLD+"Login.");
+                                System.out.print("\n\t"+Colors.GREEN_BOLD+"2"+Colors.CYAN+") "+Colors.WHITE_BOLD+"Register.");
+                                System.out.print("\n\n\t"+Colors.CYAN_BOLD_BRIGHT+">> "+Colors.GREEN_BOLD);
                                 try {
                                     userIntInput = scanner.nextInt();
                                     scanner.nextLine(); // nextInt() buffer issue
@@ -67,25 +73,25 @@ public class Client {
                             switch (userIntInput) {
                                 case 1 -> {
                                     // Login Request Code
-                                    System.out.print("\n [Console.Server]> Enter the username : ");
+                                    System.out.print("\n"+Colors.GREEN_BOLD+" ["+Colors.PURPLE_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Login"+Colors.RESET+Colors.GREEN_BOLD+"]"+Colors.WHITE+"> Enter the "+Colors.GREEN_BOLD+"username"+Colors.RESET+" : ");
                                     userInput = scanner.nextLine();
                                     username = userInput.trim();
-                                    System.out.print("\n [Console.Server]> Enter the password : ");
+                                    System.out.print("\n"+Colors.GREEN_BOLD+" ["+Colors.PURPLE_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Login"+Colors.RESET+Colors.GREEN_BOLD+"]"+Colors.WHITE+"> Enter the "+Colors.GREEN_BOLD+"password"+Colors.RESET+" : ");
                                     userInput = scanner.nextLine();
                                     lr = new LoginRequest(username, userInput);
                                     oos.writeObject(lr);
                                 }
                                 case 2 -> {
-                                    System.out.print("\n [Console.Server]> Enter the username : ");
+                                    System.out.print("\n"+Colors.GREEN_BOLD+" ["+Colors.PURPLE_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Register"+Colors.RESET+Colors.GREEN_BOLD+"]"+Colors.WHITE+"> Enter the "+Colors.GREEN_BOLD+"username"+Colors.RESET+" : ");
                                     userInput = scanner.nextLine();
                                     username = userInput.trim();
-                                    System.out.print("\n [Console.Server]> Enter the password : ");
+                                    System.out.print("\n"+Colors.GREEN_BOLD+" ["+Colors.PURPLE_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Register"+Colors.RESET+Colors.GREEN_BOLD+"]"+Colors.WHITE+"> Enter the "+Colors.GREEN_BOLD+"password"+Colors.RESET+" : ");
                                     userInput = scanner.nextLine();
                                     rr = new RegistrationRequest(username, userInput);
                                     oos.writeObject(rr);
                                 }
                                 case 0 -> {
-                                    System.out.print("\n [Console.Server]> Quiting ....");
+                                    System.out.print("\n"+Colors.GREEN_BOLD+" ["+Colors.RED_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Exit"+Colors.RESET+Colors.GREEN_BOLD+"]"+Colors.RED+"> Shut Down...\n");
                                     s.close();
                                     return;
                                 }
@@ -114,7 +120,7 @@ public class Client {
                 }
                 s.close();
             }catch(Exception e){
-                System.err.println("\n [Exception]> "+e.getMessage() );
+                System.out.print("\n"+Colors.GREEN_BOLD+" ["+Colors.RED_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::Exception"+Colors.RESET+Colors.GREEN_BOLD+"]"+Colors.RED+"> "+e.getMessage()+"\n");
             }
         }
 }

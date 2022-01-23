@@ -86,7 +86,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(65500);
         Server server = new Server(serverSocket);
-        System.out.println("\n-> Starting server on port : 65500 ");
+        System.out.print("\n"+Colors.WHITE_BOLD+" ["+Colors.GREEN_BACKGROUND+Colors.WHITE_BOLD+"Console.Server::"+Colors.RESET+Colors.WHITE_BOLD+"]"+Colors.WHITE_BOLD+"> Starting server on port : "+Colors.GREEN_BOLD+"localhost"+Colors.YELLOW_BOLD+":"+Colors.GREEN_BOLD+"65500 "+Colors.WHITE_BOLD+"...\n");
         server.startServer();
     }
 }
