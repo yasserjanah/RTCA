@@ -2,7 +2,9 @@ package Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.ObjectInputStream;
@@ -20,6 +22,10 @@ public class AppController implements Initializable {
     private ObjectInputStream ois;
     private ObservableList<String> activeUsers;
 
+    @FXML
+    private Label usernameLabel;
+
+    private String username;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -33,14 +39,16 @@ public class AppController implements Initializable {
     public void setOis(ObjectInputStream ois) {
         this.ois = ois;
     }
-
+    public void setUsername(String username) {
+        this.username = username;
+    }
     public void setActiveUsers(List<String> users) {
         this.activeUsers = FXCollections.observableArrayList(users);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        usernameLabel.setText(username);
     }
 
 

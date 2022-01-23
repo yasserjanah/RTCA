@@ -102,7 +102,7 @@ public class LoginController implements Initializable {
                     break;
                 case "logged":
                     Update update = (Update) ois.readObject();
-                    this.openAppView(update.getActiveusers());
+                    this.openAppView(update.getActiveusers(), username);
                     break;
             }
         }catch (Exception iox) {
@@ -116,7 +116,7 @@ public class LoginController implements Initializable {
     }
 
 
-    public void openAppView(List<String> activeusers){
+    public void openAppView(List<String> activeusers, String username){
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/Views/UI.fxml"));
         try {
@@ -127,6 +127,7 @@ public class LoginController implements Initializable {
             controller.setOos(oos);
             controller.setSocket(socket);
             controller.setActiveUsers(activeusers);
+            controller.setUsername(username);
             Scene scene = new Scene(root ,1080, 720);
             scene.setRoot(root);
             primaryStage.setScene(scene);
