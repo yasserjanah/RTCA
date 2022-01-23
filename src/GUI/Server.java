@@ -88,4 +88,20 @@ public class Server {
         System.out.println("\n-> Starting server on port : 65500 ");
         server.startServer();
     }
+
+
+    public static void updateActiveusers(){
+        List<String> users= new ArrayList<String>();
+        for (int i=0; i<connectionThreadList.size(); i++){
+            if( connectionThreadList.get(i).isAuthenticated() )
+                users.add( connectionThreadList.get(i).getUsername() );
+        }
+
+        for (int i=0; i<connectionThreadList.size(); i++){
+            if( connectionThreadList.get(i).isAuthenticated() )
+                connectionThreadList.get(i).updateActiveUsers(users);
+        }
+
+    }
+
 }

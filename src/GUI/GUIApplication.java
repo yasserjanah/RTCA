@@ -63,7 +63,7 @@ public class GUIApplication extends Application {
         loginController.setOos(oos);
 
         //Creating a Scene by passing the root object, height and width
-        Scene scene = new Scene(root ,1280, 720);
+        Scene scene = new Scene(root ,1080, 720);
         scene.setRoot(root);
 
 

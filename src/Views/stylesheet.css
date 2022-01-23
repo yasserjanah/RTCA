@@ -1,0 +1,28 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #909df3, #cf8484, #b57d7a, #056f77, #325c4e);
+}
+
+.side-bar {
+    -fx-background-color: linear-gradient(to bottom right, #909df3, #cf8484, #b57d7a);
+    -fx-background-color: #f9f9f9;
+    -fx-opacity: 0.3;
+
+}
+/**/
+.header {
+    -fx-background-color: #f8f8f8;
+    -fx-opacity: 0.5;
+}
+
+.search{
+    -fx-border-color: #D5D6F2;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+.message{
+    -fx-border-color: #f8f8f8;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5%;
+    -fx-background-color: none;
+}
+

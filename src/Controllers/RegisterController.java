@@ -8,14 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -69,7 +64,7 @@ public class RegisterController implements Initializable {
             loginController.setOis(ois);
             loginController.setOos(oos);
             loginController.setSocket(socket);
-            Scene scene = new Scene(root ,1280, 720);
+            Scene scene = new Scene(root ,1080, 720);
             scene.setRoot(root);
             primaryStage.setScene(scene);
         }catch (Exception ioexc){
