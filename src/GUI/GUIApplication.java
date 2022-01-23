@@ -1,5 +1,7 @@
 package GUI;
 
+import Controllers.LoginController;
+import Database.MongoDBController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -14,6 +16,12 @@ public class GUIApplication extends Application {
 
     private static Stage primaryStageObj;
 
+    private MongoDBController mongo;
+
+    public GUIApplication(){
+        mongo = new MongoDBController();
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -23,7 +31,13 @@ public class GUIApplication extends Application {
         //creating the root object
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/Views/login_RTCA.fxml"));
-        Parent root = fxmlLoader.load();
+        AnchorPane root = fxmlLoader.load();
+
+
+        LoginController loginController = (LoginController) fxmlLoader.getController();
+        loginController.setMongo(mongo);
+        loginController.setPrimaryStage(primaryStage);
+
 
         //Creating a Scene by passing the root object, height and width
         Scene scene = new Scene(root ,1080, 720);

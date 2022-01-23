@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@rtca.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@rtca.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="721.0" stroke="BLACK" strokeType="INSIDE" width="1081.0">
          <fill>
@@ -67,6 +67,6 @@
             <Font name="Montserrat Black" size="29.0" />
          </font>
       </Text>
-      <Hyperlink layoutX="516.0" layoutY="636.0" text="register" textFill="WHITE" />
+      <Hyperlink layoutX="516.0" layoutY="636.0" text="register" onAction="#openRegister" textFill="WHITE" />
    </children>
 </AnchorPane>
