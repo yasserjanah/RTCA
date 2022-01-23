@@ -1,5 +1,7 @@
+import Authentication.LoginRequest;
 import Authentication.RegistrationRequest;
 import Database.MongoDBController;
+import Exceptions.LoginErrorException;
 import Exceptions.UserExistsException;
 
 import java.io.*;
@@ -9,7 +11,7 @@ import java.util.Objects;
 public class ConnectionThread extends Thread {
 
     private Socket socket;
-    private MongoDBController mongoDBController;
+    private final MongoDBController mongoDBController;
     private PrintWriter pw;
     private BufferedReader br;
     private ObjectOutputStream oos;
@@ -56,11 +58,36 @@ public class ConnectionThread extends Thread {
                 pw.println("auth|#n# [Server]> authentication ");
                 pw.flush();
             }else{
-                pw.println("auth|#n# [Server]> authentication ");
-                pw.flush();
+                // pw.println("auth|#n# [Server]> authentication ");
+                // pw.flush();
                 // Login request handling
-                // dont forget to set username
+                // don't forget to set username
+                LoginRequest loginRequestr = (LoginRequest) responseObject;
+                try{
+                    boolean check = this.mongoDBController.passwordIsValid( loginRequestr.getUsername(), loginRequestr.getPassword() );
+                    if (check) {
+                        System.out.println("VALID");
+                        pw.println("writeRead|#n##n# [Server]> user ("+loginRequestr.getUsername()+") is successfully logged In ! #n#");
+                        pw.flush();
+
+                        username = loginRequestr.getUsername();
+                    }else {
+                        System.out.println("NOT VALID");
+                        pw.println("write|#n##n# [Server]> username OR password Incorrect ! ");
+                        pw.flush();
+                        pw.println("auth|#n# [Server]> authentication ");
+                        pw.flush();
+                    }
+
+                }catch(LoginErrorException uexc){
+                    pw.println("write|#n##n# [Server]> username OR password Incorrect ! ");
+                    pw.flush();
+                    pw.println("auth|#n# [Server]> authentication ");
+                    pw.flush();
+                }
+
             }
+
             username =br.readLine();
         } catch (Exception e) {
             System.err.print("\n[Exception]> exception reading Object : "+e.getMessage());
