@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DialogPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -19,12 +21,14 @@ public class GUIApplication extends Application {
         primaryStageObj = primaryStage;
 
         //creating the root object
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/Views/login_RTCA.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/Views/login_RTCA.fxml"));
+        Parent root = fxmlLoader.load();
 
-
-        //Creating a Scene by passing the group object, height and width
+        //Creating a Scene by passing the root object, height and width
         Scene scene = new Scene(root ,1080, 720);
         scene.setRoot(root);
+
 
         //Setting the title to Stage.
         primaryStage.setTitle("RTCA fx-client");
