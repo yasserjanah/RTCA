@@ -1,3 +1,5 @@
+package Console;
+
 import Database.MongoDBController;
 
 import java.io.IOException;

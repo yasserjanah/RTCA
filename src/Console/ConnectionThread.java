@@ -1,3 +1,5 @@
+package Console;
+
 import Authentication.LoginRequest;
 import Authentication.RegistrationRequest;
 import Database.MongoDBController;
@@ -38,7 +40,7 @@ public class ConnectionThread extends Thread {
         ipUser = socket.getRemoteSocketAddress().toString();
 
         while(true){ // while not logged
-            pw.println("auth|#n# [Server]> authentication ");
+            pw.println("auth|#n# [Console.Server]> authentication ");
             pw.flush();
             try {
                 Object responseObject = ois.readObject();
@@ -50,16 +52,16 @@ public class ConnectionThread extends Thread {
                             this.mongoDBController.insertionOfUser(rr.getUsername(), rr.getPassword());
                         }
                     } catch (UserExistsException uexc) {
-                        pw.println("write|#n##n# [Server]> username already taken, choose another one ! ");
-                        pw.println("auth|#n# [Server]> authentication ");
+                        pw.println("write|#n##n# [Console.Server]> username already taken, choose another one ! ");
+                        pw.println("auth|#n# [Console.Server]> authentication ");
                         pw.flush();
                     }
-                    pw.println("write|#n##n# [Server]> user (" + rr.getUsername() + ") is successfully registred, please sign-in ! #n#");
+                    pw.println("write|#n##n# [Console.Server]> user (" + rr.getUsername() + ") is successfully registred, please sign-in ! #n#");
                     pw.flush();
-                    pw.println("auth|#n# [Server]> authentication ");
+                    pw.println("auth|#n# [Console.Server]> authentication ");
                     pw.flush();
                 } else {
-                    // pw.println("auth|#n# [Server]> authentication ");
+                    // pw.println("auth|#n# [Console.Server]> authentication ");
                     // pw.flush();
                     // Login request handling
                     // don't forget to set username
@@ -69,21 +71,21 @@ public class ConnectionThread extends Thread {
                         if (check) {
                             System.out.println("VALID");
                             username = loginRequestr.getUsername();
-                            pw.println("write|#n##n# [Server]> user (" + username + ") is successfully logged In ! #n#"); // writeRead = write+read , so client will send smthing not expected by server
+                            pw.println("write|#n##n# [Console.Server]> user (" + username + ") is successfully logged In ! #n#"); // writeRead = write+read , so client will send smthing not expected by server
                             pw.flush();
                             break; // if loged break
                         } else {
                             System.out.println("NOT VALID");
-                            pw.println("write|#n##n# [Server]> username OR password Incorrect ! ");
+                            pw.println("write|#n##n# [Console.Server]> username OR password Incorrect ! ");
                             pw.flush();
-                            pw.println("auth|#n# [Server]> authentication ");
+                            pw.println("auth|#n# [Console.Server]> authentication ");
                             pw.flush();
                         }
 
                     } catch (LoginErrorException uexc) {
-                        pw.println("write|#n##n# [Server]> username OR password Incorrect ! ");
+                        pw.println("write|#n##n# [Console.Server]> username OR password Incorrect ! ");
                         pw.flush();
-                        pw.println("auth|#n# [Server]> authentication ");
+                        pw.println("auth|#n# [Console.Server]> authentication ");
                         pw.flush();
                     }
 
@@ -98,10 +100,10 @@ public class ConnectionThread extends Thread {
         String userStrInput="", str_targetUser="", message="";;
         String [] explode;
         int userIntInput=1, int_targetUser=0 ;
-        pw.println("write|#n# [Server]> You are connected now, to close this connection enter 0#n##n#");
+        pw.println("write|#n# [Console.Server]> You are connected now, to close this connection enter 0#n##n#");
 
         while( true ){
-            pw.println("write|#n##n# [Server]> Currently connected users : ");
+            pw.println("write|#n##n# [Console.Server]> Currently connected users : ");
             i=0;
             pw.flush();
             for( ConnectionThread th: Server.getConnectionThreadList() ) {
@@ -109,8 +111,8 @@ public class ConnectionThread extends Thread {
                 pw.println("write|#n#\t\t " + i + " -> " + th.getUsername() + "  (@)  " + th.getIpUser());
             }
             pw.flush();
-            pw.println("writeRead|#n# [Server]> You may need to press enter each time to show received messages, To send a message type=> IndexOfUser:YourMessageHere #n#" +
-                    "To send a broadcast type=> *:YourMessageHere #n# [Server] your input > ");
+            pw.println("writeRead|#n# [Console.Server]> You may need to press enter each time to show received messages, To send a message type=> IndexOfUser:YourMessageHere #n#" +
+                    "To send a broadcast type=> *:YourMessageHere #n# [Console.Server] your input > ");
 
 
             try {
@@ -126,7 +128,7 @@ public class ConnectionThread extends Thread {
                 System.err.print("\n[NumberFormatException]> bad number input");
                 explode = userStrInput.split(":");
                 if( explode.length<2 || explode[1].trim().length()==0 ){
-                    pw.println("write|#n# [Server]> Invalid input, try again. ");
+                    pw.println("write|#n# [Console.Server]> Invalid input, try again. ");
                 }else{
                     str_targetUser = explode[0];
                     explode[0] ="";
@@ -142,7 +144,7 @@ public class ConnectionThread extends Thread {
                         }
 
                     }catch( NumberFormatException nfexc2){
-                        pw.println("write|#n#[Server]> Invalid input, try again. ");
+                        pw.println("write|#n#[Console.Server]> Invalid input, try again. ");
                     }
                 }
             }
@@ -153,18 +155,18 @@ public class ConnectionThread extends Thread {
 
     public void receiveMsg(String srcName, String srcIp, String Message){
         pw.flush();
-        pw.println("write|#n#*** #n#*****[Server: New message] from("+srcName+"@"+srcIp+")> "+Message+"#n#***");
+        pw.println("write|#n#*** #n#*****[Console.Server: New message] from("+srcName+"@"+srcIp+")> "+Message+"#n#***");
     }
 
     public void closeConnection(){
         try {
-            pw.println("write|#n# [Server]> Closing connection ... ");
+            pw.println("write|#n# [Console.Server]> Closing connection ... ");
             socket.close();
             System.out.print("\n-> Connection closed : "+ username +" ==> IP : "+ipUser);
         }catch (IOException ioexc){
             System.err.print("\n[IOException4]> Cannot close connection!");
         }
-        Server.romoveConnectionThread(this); // to remove ConnectionThread from the list
+        Server.romoveConnectionThread(this); // to remove Console.ConnectionThread from the list
     }
 
     @Override

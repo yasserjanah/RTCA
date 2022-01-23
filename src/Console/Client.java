@@ -1,3 +1,5 @@
+package Console;
+
 import Authentication.LoginRequest;
 import Authentication.RegistrationRequest;
 
@@ -65,25 +67,25 @@ public class Client {
                             switch (userIntInput) {
                                 case 1 -> {
                                     // Login Request Code
-                                    System.out.print("\n [Server]> Enter the username : ");
+                                    System.out.print("\n [Console.Server]> Enter the username : ");
                                     userInput = scanner.nextLine();
                                     username = userInput.trim();
-                                    System.out.print("\n [Server]> Enter the password : ");
+                                    System.out.print("\n [Console.Server]> Enter the password : ");
                                     userInput = scanner.nextLine();
                                     lr = new LoginRequest(username, userInput);
                                     oos.writeObject(lr);
                                 }
                                 case 2 -> {
-                                    System.out.print("\n [Server]> Enter the username : ");
+                                    System.out.print("\n [Console.Server]> Enter the username : ");
                                     userInput = scanner.nextLine();
                                     username = userInput.trim();
-                                    System.out.print("\n [Server]> Enter the password : ");
+                                    System.out.print("\n [Console.Server]> Enter the password : ");
                                     userInput = scanner.nextLine();
                                     rr = new RegistrationRequest(username, userInput);
                                     oos.writeObject(rr);
                                 }
                                 case 0 -> {
-                                    System.out.print("\n [Server]> Quiting ....");
+                                    System.out.print("\n [Console.Server]> Quiting ....");
                                     s.close();
                                     return;
                                 }
