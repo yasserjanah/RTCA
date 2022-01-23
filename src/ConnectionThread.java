@@ -35,63 +35,63 @@ public class ConnectionThread extends Thread {
     @Override
     public void run() {
         int i;
-        ipUser=socket.getRemoteSocketAddress().toString();
+        ipUser = socket.getRemoteSocketAddress().toString();
 
-        pw.println("auth|#n# [Server]> authentication ");
-        pw.flush();
-        try {
-            Object responseObject = ois.readObject();
-            if( responseObject instanceof RegistrationRequest ){
+        while(true){ // while not logged
+            pw.println("auth|#n# [Server]> authentication ");
+            pw.flush();
+            try {
+                Object responseObject = ois.readObject();
+                if (responseObject instanceof RegistrationRequest) {
 
-                RegistrationRequest rr = (RegistrationRequest) responseObject;
-                try{
-                    synchronized (this.mongoDBController){
-                        this.mongoDBController.insertionOfUser( rr.getUsername(), rr.getPassword() );
+                    RegistrationRequest rr = (RegistrationRequest) responseObject;
+                    try {
+                        synchronized (this.mongoDBController) {
+                            this.mongoDBController.insertionOfUser(rr.getUsername(), rr.getPassword());
+                        }
+                    } catch (UserExistsException uexc) {
+                        pw.println("write|#n##n# [Server]> username already taken, choose another one ! ");
+                        pw.println("auth|#n# [Server]> authentication ");
+                        pw.flush();
                     }
-                }catch(UserExistsException uexc){
-                    pw.println("write|#n##n# [Server]> username already taken, choose another one ! ");
+                    pw.println("write|#n##n# [Server]> user (" + rr.getUsername() + ") is successfully registred, please sign-in ! #n#");
+                    pw.flush();
                     pw.println("auth|#n# [Server]> authentication ");
                     pw.flush();
-                }
-                pw.println("write|#n##n# [Server]> user ("+rr.getUsername()+") is successfully registred, please sign-in ! #n#");
-                pw.flush();
-                pw.println("auth|#n# [Server]> authentication ");
-                pw.flush();
-            }else{
-                // pw.println("auth|#n# [Server]> authentication ");
-                // pw.flush();
-                // Login request handling
-                // don't forget to set username
-                LoginRequest loginRequestr = (LoginRequest) responseObject;
-                try{
-                    boolean check = this.mongoDBController.passwordIsValid( loginRequestr.getUsername(), loginRequestr.getPassword() );
-                    if (check) {
-                        System.out.println("VALID");
-                        pw.println("writeRead|#n##n# [Server]> user ("+loginRequestr.getUsername()+") is successfully logged In ! #n#");
-                        pw.flush();
+                } else {
+                    // pw.println("auth|#n# [Server]> authentication ");
+                    // pw.flush();
+                    // Login request handling
+                    // don't forget to set username
+                    LoginRequest loginRequestr = (LoginRequest) responseObject;
+                    try {
+                        boolean check = this.mongoDBController.passwordIsValid(loginRequestr.getUsername(), loginRequestr.getPassword());
+                        if (check) {
+                            System.out.println("VALID");
+                            username = loginRequestr.getUsername();
+                            pw.println("write|#n##n# [Server]> user (" + username + ") is successfully logged In ! #n#"); // writeRead = write+read , so client will send smthing not expected by server
+                            pw.flush();
+                            break; // if loged break
+                        } else {
+                            System.out.println("NOT VALID");
+                            pw.println("write|#n##n# [Server]> username OR password Incorrect ! ");
+                            pw.flush();
+                            pw.println("auth|#n# [Server]> authentication ");
+                            pw.flush();
+                        }
 
-                        username = loginRequestr.getUsername();
-                    }else {
-                        System.out.println("NOT VALID");
+                    } catch (LoginErrorException uexc) {
                         pw.println("write|#n##n# [Server]> username OR password Incorrect ! ");
                         pw.flush();
                         pw.println("auth|#n# [Server]> authentication ");
                         pw.flush();
                     }
 
-                }catch(LoginErrorException uexc){
-                    pw.println("write|#n##n# [Server]> username OR password Incorrect ! ");
-                    pw.flush();
-                    pw.println("auth|#n# [Server]> authentication ");
-                    pw.flush();
                 }
-
+            } catch (Exception e) {
+                System.err.print("\n[Exception]> exception reading Object : " + e.getMessage());
+                // check if connection was closed here :
             }
-
-            username =br.readLine();
-        } catch (Exception e) {
-            System.err.print("\n[Exception]> exception reading Object : "+e.getMessage());
-            // check if connection was closed here :
         }
 
         System.out.print("\n-> New user has connected : "+ username + "  ==> IP : "+ipUser);

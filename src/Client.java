@@ -46,7 +46,7 @@ public class Client {
 
                 while (true){
                     serverInput = br.readLine();
-                    if( s.isClosed() )
+                    if( s.isClosed() || serverInput==null ) // throws an exception
                         break;
                     serverCmds = explodeServerResponse( serverInput );
                     switch (serverCmds[0]) {
