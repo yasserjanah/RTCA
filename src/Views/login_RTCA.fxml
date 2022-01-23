@@ -51,7 +51,7 @@
       <Rectangle fill="WHITE" height="7.0" layoutX="391.0" layoutY="323.0" opacity="0.37" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" AnchorPane.topAnchor="323.0" />
       <Circle fill="WHITE" layoutX="547.0" layoutY="187.0" radius="53.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.topAnchor="134.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="70.0" layoutX="1.0" opacity="0.34" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1080.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Button fx:id="loginButton" alignment="CENTER" layoutX="453.0" layoutY="573.0" mnemonicParsing="false" opacity="0.81" prefHeight="48.0" prefWidth="177.0" text="LOGIN" textAlignment="CENTER">
+      <Button fx:id="loginButton" onAction="#login" alignment="CENTER" layoutX="453.0" layoutY="573.0" mnemonicParsing="false" opacity="0.81" prefHeight="48.0" prefWidth="177.0" text="LOGIN" textAlignment="CENTER">
          <font>
             <Font name="Montserrat Black" size="22.0" />
          </font></Button>

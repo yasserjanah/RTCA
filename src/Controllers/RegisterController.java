@@ -69,7 +69,7 @@ public class RegisterController implements Initializable {
             loginController.setOis(ois);
             loginController.setOos(oos);
             loginController.setSocket(socket);
-            Scene scene = new Scene(root ,1280, 720);
+            Scene scene = new Scene(root ,1080, 720);
             scene.setRoot(root);
             primaryStage.setScene(scene);
         }catch (Exception ioexc){

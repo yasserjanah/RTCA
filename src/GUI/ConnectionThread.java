@@ -4,6 +4,7 @@ import Authentication.LoginRequest;
 import Authentication.RegistrationRequest;
 import Communication.Message;
 import Communication.Response;
+import Communication.Update;
 import Database.MongoDBController;
 import Exceptions.LoginErrorException;
 import Exceptions.UserExistsException;
@@ -75,10 +76,12 @@ public class ConnectionThread extends Thread {
                                     res = new Response("logged", username + " successfully logged in");
                                     oos.writeObject(res);
                                     oos.flush();
+                                    Server.updateActiveusers();
+                                    oos.flush();
                                     continue;
                                 } else {
                                     System.out.println("[i] invalid logging attempt >  " + loginRequestr.getUsername());
-                                    res = new Response("logginErr", "username OR password Incorrect !");
+                                    res = new Response("logginErr", "username OR password is incorrect !");
                                     oos.writeObject(res);
                                     oos.flush();
                                     continue;
@@ -115,6 +118,7 @@ public class ConnectionThread extends Thread {
 
                 }
             } catch (Exception e) {
+                Server.updateActiveusers();
                 System.err.print("\n[Exception]> exception reading Object : " + e.getMessage());
                 break;// if it cannot read an object, this means that the connection is closed !
             }
@@ -133,6 +137,7 @@ public class ConnectionThread extends Thread {
     }
 
     public void closeConnection(){
+        Server.updateActiveusers();
         try {
             Response res = new Response("closeConnection", "Closing connection ...");
             oos.writeObject(res);
@@ -165,5 +170,19 @@ public class ConnectionThread extends Thread {
 
     public String getIpUser() {
         return ipUser;
+    }
+
+    public boolean isAuthenticated(){
+        return this.getUsername()!=null;
+    }
+
+    public void updateActiveUsers( List<String> users){
+        Update update = new Update(users);
+        try {
+            oos.writeObject(update);
+            oos.flush();
+        }catch (Exception exc){
+            System.err.println("[Thread::updateActiveUsers] Exception > "+exc.getMessage());
+        }
     }
 }
