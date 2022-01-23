@@ -56,12 +56,12 @@ public class ConnectionThread extends Thread {
                                     this.mongoDBController.insertionOfUser(rr.getUsername(), rr.getPassword());
                                 }
                             } catch (UserExistsException uexc) {
-                                res = new Response("userExists", "user with username : (" + rr.getUsername() + ") exists already ");
+                                res = new Response("userExists", "user with username " + rr.getUsername() + " exists already ");
                                 oos.writeObject(res);
                                 oos.flush();
                                 continue;
                             }
-                            res = new Response("userRegistred", "user with username : (" + rr.getUsername() + ") is successfully registered ! ");
+                            res = new Response("userRegistred", "user with username " + rr.getUsername() + " is successfully registered ! ");
                             oos.writeObject(res);
                             oos.flush();
                             continue;
@@ -116,8 +116,8 @@ public class ConnectionThread extends Thread {
                 }
             } catch (Exception e) {
                 System.err.print("\n[Exception]> exception reading Object : " + e.getMessage());
+                break;// if it cannot read an object, this means that the connection is closed !
             }
-
         }
         closeConnection();
     }

@@ -22,15 +22,11 @@ import java.net.Socket;
 public class GUIApplication extends Application {
 
     private static Stage primaryStageObj;
-
-    private MongoDBController mongo;
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
     public GUIApplication(){
-
-        mongo = new MongoDBController();
     }
 
 
@@ -50,6 +46,7 @@ public class GUIApplication extends Application {
             socketAlert.setHeaderText("Connection to server failed !");
             socketAlert.showAndWait();
             primaryStage.close();
+            return;
         }
 
         primaryStageObj = primaryStage;
@@ -60,14 +57,13 @@ public class GUIApplication extends Application {
 
 
         LoginController loginController = (LoginController) fxmlLoader.getController();
-        loginController.setMongo(mongo);
         loginController.setPrimaryStage(primaryStage);
         loginController.setSocket(socket);
         loginController.setOis(ois);
         loginController.setOos(oos);
 
         //Creating a Scene by passing the root object, height and width
-        Scene scene = new Scene(root ,1080, 720);
+        Scene scene = new Scene(root ,1280, 720);
         scene.setRoot(root);
 
 

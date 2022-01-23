@@ -1,12 +1,21 @@
 package Controllers;
 
+import Authentication.LoginRequest;
+import Authentication.RegistrationRequest;
+import Communication.Response;
 import Database.MongoDBController;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -16,16 +25,20 @@ import java.util.ResourceBundle;
 public class RegisterController implements Initializable {
 
 
-    private MongoDBController mongo;
     private Stage primaryStage;
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
+    @FXML
+    private TextField usernameId;
 
-    public void setMongo(MongoDBController mongo) {
-        this.mongo = mongo;
-    }
+    @FXML
+    private PasswordField passwordId;
+
+    @FXML
+    private Button registerButton;
+
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -52,7 +65,6 @@ public class RegisterController implements Initializable {
         try {
             AnchorPane root = fxmlLoader.load();
             LoginController loginController = (LoginController) fxmlLoader.getController();
-            loginController.setMongo(mongo);
             loginController.setPrimaryStage(primaryStage);
             loginController.setOis(ois);
             loginController.setOos(oos);
@@ -63,6 +75,48 @@ public class RegisterController implements Initializable {
         }catch (Exception ioexc){
             System.err.println("[RegisterController::openLogin]Exception> "+ioexc.getMessage());
         }
-
     }
+
+    public void register(){
+        registerButton.setDisable(true);
+        usernameId.setDisable(true);
+        passwordId.setDisable(true);
+        String username = usernameId.getText().trim();
+        String password = passwordId.getText();
+        Alert alert = new Alert( Alert.AlertType.WARNING);
+        alert.setTitle("Registration");
+        if( username.length()==0 || password.length()==0){
+            alert.setHeaderText(" Please enter a username & a password ! ");
+            alert.showAndWait();
+            return;
+        }
+        RegistrationRequest rr = new RegistrationRequest( username, password);
+        try {
+            oos.writeObject(rr);
+            oos.flush();
+            Response res = (Response) ois.readObject();
+            switch(res.getType()){
+                case "userExists":
+                    alert.setAlertType( Alert.AlertType.ERROR);
+                    alert.setHeaderText("This username exists already");
+                    alert.setContentText( res.getContent() );
+                    alert.show();
+                    break;
+                case "userRegistred":
+                    alert.setAlertType( Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Registration is successful !");
+                    alert.setContentText( res.getContent() );
+                    alert.show();
+                    break;
+            }
+        }catch (Exception iox) {
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setHeaderText("Connection with the server is lost");
+            alert.showAndWait();
+        }
+        registerButton.setDisable(false);
+        usernameId.setDisable(false);
+        passwordId.setDisable(false);
+    }
+
 }
