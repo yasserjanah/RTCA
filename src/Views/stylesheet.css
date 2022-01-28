@@ -6,8 +6,8 @@
     -fx-background-color: linear-gradient(to bottom right, #909df3, #cf8484, #b57d7a);
     -fx-background-color: #f9f9f9;
     -fx-opacity: 0.3;
-
 }
+
 /**/
 .header {
     -fx-background-color: #f8f8f8;
@@ -24,5 +24,15 @@
     -fx-border-width: 2px;
     -fx-border-radius: 5%;
     -fx-background-color: none;
+    -fx-text-fill: white;
 }
 
+.transparentBG {
+    -fx-background-color: transparent;
+    -fx-opacity: 0.3;
+    -fx-background: transparent;
+}
+
+.transparentBG > .viewport {
+    -fx-background-color: transparent;
+}

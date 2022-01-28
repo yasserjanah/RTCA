@@ -5,6 +5,7 @@ module RTCA {
     requires javafx.fxml;
     requires mongo.java.driver;
     requires spring.security.crypto;
+    requires fontawesomefx;
     opens Controllers;
     exports GUI;
 }

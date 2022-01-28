@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -13,27 +17,70 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="root" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AppController">
+<AnchorPane maxHeight="720.0" prefHeight="720.0" prefWidth="1080.0" styleClass="root" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AppController">
    <children>
-      <Pane layoutX="-11.0" layoutY="70.0" prefHeight="720.0" prefWidth="332.0" styleClass="side-bar">
+      <Pane layoutX="290.0" layoutY="130.0" prefHeight="522.0" prefWidth="787.0" styleClass="transparentBG">
          <children>
-            <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="7.0" prefHeight="39.0" prefWidth="272.0" styleClass="search">
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="523.0" prefWidth="786.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <Pane layoutX="56.0" layoutY="14.0" opacity="1" prefHeight="145.0" prefWidth="467.0">
+                           <children>
+                              <Circle fill="#d7d5d5" layoutX="28.0" opacity="1" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="item" />
+                              <Label layoutX="76.0" layoutY="29.0" opacity="1" mouseTransparent="true" text="Yassir Janah" textFill="#110101">
+                                 <font>
+                                    <Font name="Bell MT Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField layoutX="61.0" layoutY="21.0" prefHeight="97.0" prefWidth="288.0" styleClass="message" />
+                              
+                              <FontAwesomeIcon fill="#726e6e" glyphName="USER" layoutX="13.0" layoutY="64.0" size="3em" wrappingWidth="48.0" />
+                              
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <Pane layoutX="-11.0" layoutY="70.0" prefHeight="720.0" prefWidth="300.0" styleClass="side-bar">
+         <children>
+            <Pane layoutX="12.0" prefHeight="60.0" prefWidth="290.0">
                <children>
-                  <TextField alignment="CENTER" prefHeight="37.0" prefWidth="272.0" promptText="Search" style="-fx-background-color: transparent;">
+                  <Circle fill="#d7d5d5" layoutX="82.0" layoutY="30.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="item" />
+                  <Label layoutX="123.0" layoutY="19.0" mouseTransparent="true" styleClass="item" text="EveryOne">
+                     <font>
+                        <Font name="Bell MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Separator layoutX="12.0" layoutY="60.0" prefHeight="1.0" prefWidth="290.0" />
+            <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="70.0" prefHeight="39.0" prefWidth="270.0" styleClass="search">
+               <children>
+                  
+                  <FontAwesomeIcon fill="#908d8d" fontSmoothingType="LCD" glyphName="SEARCH" size="1.5em" wrappingWidth="16.0" />
+                                    
+                  <TextField alignment="CENTER" prefHeight="37.0" prefWidth="320.0" promptText="Search" style="-fx-background-color: transparent;">
                      <font>
                         <Font name="Bell MT" size="18.0" />
                      </font>
                   </TextField>
                </children>
             </HBox>
-            <ScrollPane hbarPolicy="NEVER" layoutX="12.0" layoutY="156.0" prefHeight="564.0" prefWidth="320.0">
+            <ScrollPane hbarPolicy="NEVER" layoutX="12.0" layoutY="135.0" prefHeight="510.0" prefWidth="286.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="632.0" prefWidth="304.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <Pane prefHeight="89.0" prefWidth="304.0">
+                        <Pane>
                            <children>
-                              <Circle fill="#d7d5d5" layoutX="52.0" layoutY="46.0" radius="32.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="item" />
-                              <Label layoutX="126.0" layoutY="35.0" mouseTransparent="true" styleClass="item" text="Yassir Janah">
+                              <Circle fill="#d7d5d5" layoutX="52.0" layoutY="46.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="item" />
+                              
+                              <FontAwesomeIcon fill="#726e6e" glyphName="USER" layoutX="30.0" layoutY="63.0" size="4em" wrappingWidth="48.0" />
+                                                
+                              <Label layoutX="115.0" layoutY="36.0" mouseTransparent="true" styleClass="item" text="Yassir Janah">
                                  <font>
                                     <Font name="Bell MT Bold" size="16.0" />
                                  </font>
@@ -45,17 +92,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Pane layoutX="20.0" layoutY="52.0" prefHeight="79.0" prefWidth="304.0">
-               <children>
-                  <Circle fill="#d7d5d5" layoutX="48.0" layoutY="41.0" radius="32.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="item" />
-                  <Label layoutX="138.0" layoutY="28.0" mouseTransparent="true" styleClass="item" text="EveryOne">
-                     <font>
-                        <Font name="Bell MT Bold" size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <Label layoutX="16.0" layoutY="140.0" text="Active users :" />
+            <Label layoutX="14.0" layoutY="120.0" text="Active users :" />
          </children>
       </Pane>
       <Pane prefHeight="70.0" prefWidth="1080.0" styleClass="header">
@@ -67,17 +104,23 @@
             </ImageView>
             <HBox alignment="CENTER" layoutX="916.0" layoutY="18.0">
                <children>
-                  <Label fx:id="usernameLabel" prefHeight="35.0" prefWidth="110.0" text="Amine HMINE" textFill="#282727" textOverrun="CLIP">
+                  <Label fx:id="usernameLabel" maxWidth="130.0" prefHeight="35.0" text="Amine HMINE" textFill="#282727" textOverrun="CLIP">
                      <font>
                         <Font name="Bell MT Bold" size="15.0" />
                      </font>
                   </Label>
+                  
+                  <FontAwesomeIcon glyphName="SIGN_OUT" size="1.5em" />
+                  
                </children>
             </HBox>
          </children>
       </Pane>
-      <HBox alignment="CENTER" layoutX="405.0" layoutY="85.0" prefHeight="70.0" prefWidth="585.0" styleClass="search">
+      <HBox alignment="CENTER" layoutX="290.0" layoutY="70.0" prefHeight="60.0" prefWidth="790.0" styleClass="search">
          <children>
+            
+            <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="3.5em" />
+            
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="230.0" text="All Users" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
                <font>
                   <Font name="Bell MT Bold" size="29.0" />
@@ -85,28 +128,22 @@
             </Label>
          </children>
       </HBox>
-      <Pane layoutX="405.0" layoutY="178.0" prefHeight="145.0" prefWidth="467.0">
+      <HBox alignment="CENTER" layoutX="292.0" layoutY="656.0" prefHeight="64.0" prefWidth="783.0" spacing="10.0">
          <children>
-            <Circle fill="#d7d5d5" layoutX="28.0" layoutY="50.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="item" />
-            <Label layoutX="76.0" layoutY="29.0" mouseTransparent="true" text="Yassir Janah" textFill="WHITE">
-               <font>
-                  <Font name="Bell MT Bold" size="16.0" />
-               </font>
-            </Label>
-            <TextField layoutX="61.0" layoutY="21.0" prefHeight="97.0" prefWidth="288.0" styleClass="message" />
-         </children>
-      </Pane>
-      <HBox alignment="CENTER" layoutX="433.0" layoutY="697.0" prefHeight="64.0" prefWidth="530.0" spacing="10.0">
-         <children>
-            <TextField prefHeight="45.0" prefWidth="438.0" promptText="Type a Message" styleClass="message">
+            <TextField prefHeight="45.0" prefWidth="548.0" promptText="Type a Message" styleClass="message">
                <font>
                   <Font name="Bell MT" size="14.0" />
                </font>
             </TextField>
+            
+            <FontAwesomeIcon fill="#f8f8f8" glyphName="SEND" size="1.5em" />
+            <FontAwesomeIcon fill="#f8f8f8" glyphName="PLUS" size="1.5em" />
+            
          </children>
          <padding>
             <Insets left="2.0" right="2.0" />
          </padding>
       </HBox>
+      <Separator layoutX="292.0" layoutY="655.0" prefHeight="1.0" prefWidth="787.0" />
    </children>
 </AnchorPane>

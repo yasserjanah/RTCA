@@ -86,6 +86,9 @@ public class LoginController implements Initializable {
         if( username.length()==0 || password.length()==0){
             alert.setHeaderText(" Please enter a username & a password ! ");
             alert.showAndWait();
+            loginButton.setDisable(false);
+            usernameId.setDisable(false);
+            passwordId.setDisable(false);
             return;
         }
         LoginRequest lr = new LoginRequest( username, password);

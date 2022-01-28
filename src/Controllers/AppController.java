@@ -41,6 +41,7 @@ public class AppController implements Initializable {
     }
     public void setUsername(String username) {
         this.username = username;
+        usernameLabel.setText(username);
     }
     public void setActiveUsers(List<String> users) {
         this.activeUsers = FXCollections.observableArrayList(users);
@@ -48,7 +49,6 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usernameLabel.setText(username);
     }
 
 
